@@ -6,8 +6,10 @@ import Search from "./components/Search";
 import Filter from "./components/Filter";
 
 function App() {
+  const [search, setSearch] = useState("");
 
-  const [search, setSearch] = useState("")
+  const [filter, setFilter] = useState("All");
+  const [sort, setSort] = useState("Asc");
 
   const [todos, setTodos] = useState([
     {
@@ -57,24 +59,35 @@ function App() {
     const filteredTodos = newTodos.filter((todo) =>
       todo.id !== id ? todo : null
     );
-    console.log(filteredTodos)
+    console.log(filteredTodos);
     setTodos(filteredTodos);
   };
 
   return (
     <div className="app">
       <h1>Lista de Tarefas</h1>
-      <Search search={search} setSearch={setSearch}/>
-      <Filter />
+      <Search search={search} setSearch={setSearch} />
+      <Filter filter={filter} setFilter={setFilter} />
       <div className="todo-list">
-        {todos.filter((todo) => todo.text.toLowerCase().includes(search.toLowerCase())).map((todo) => (
-          <Todo
-            key={todo.id}
-            todo={todo}
-            removeTodo={removeTodo}
-            completeTodo={completeTodo}
-          />
-        ))}
+        {todos
+          .filter((todo) =>
+            filter === "All"
+              ? true
+              : filter === "Completed"
+              ? todo.isCompleted
+              : !todo.isCompleted
+          )
+          .filter((todo) =>
+            todo.text.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((todo) => (
+            <Todo
+              key={todo.id}
+              todo={todo}
+              removeTodo={removeTodo}
+              completeTodo={completeTodo}
+            />
+          ))}
       </div>
       <TodoForm addTodo={addTodo} />
     </div>
