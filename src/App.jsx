@@ -36,24 +36,40 @@ function App() {
       },
     ];
 
-    setTodos(newTodos)
+    setTodos(newTodos);
+  };
+
+  const completeTodo = (id) => {
+    let newTodos = [...todos];
+    newTodos.map((todo) =>
+      todo.id === id ? (todo.isCompleted = !todo.isCompleted) : todo
+    );
+    setTodos(newTodos);
   };
 
   const removeTodo = (id) => {
-    const newTodos= [...todos]
-    const filteredTodos = newTodos.filter(todo => todo.id !== id ? todo : null);
-    setTodos(filteredTodos)
-  }
+    const newTodos = [...todos];
+    const filteredTodos = newTodos.filter((todo) =>
+      todo.id !== id ? todo : null
+    );
+    console.log(filteredTodos)
+    setTodos(filteredTodos);
+  };
 
   return (
     <div className="app">
       <h1>Lista de Tarefas</h1>
       <div className="todo-list">
         {todos.map((todo) => (
-          <Todo key={todo.id} todo={todo} removeTodo={removeTodo} />
+          <Todo
+            key={todo.id}
+            todo={todo}
+            removeTodo={removeTodo}
+            completeTodo={completeTodo}
+          />
         ))}
       </div>
-      <TodoForm addTodo={addTodo}/>
+      <TodoForm addTodo={addTodo} />
     </div>
   );
 }
